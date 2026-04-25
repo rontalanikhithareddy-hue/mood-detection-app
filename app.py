@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "emotion_model.h5"
 st.set_page_config(
     page_title="Face Mood Detection",
-    page_icon="ðŸ˜Š",
+    page_icon="😊",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -278,18 +278,18 @@ def load_emotion_model():
     try:
         from tensorflow.keras.models import load_model
         if not MODEL_PATH.exists():
-            st.error(f"âŒ Model file not found at: {MODEL_PATH}")
+            st.error(f"❌ Model file not found at: {MODEL_PATH}")
             st.info("Please ensure 'emotion_model.h5' is in the same directory as app.py")
             return None
         print(f"[DEBUG] Loading model from: {MODEL_PATH}")
         model = load_model(str(MODEL_PATH))
-        print("[DEBUG] âœ… Model loaded successfully!")
+        print("[DEBUG] ✅ Model loaded successfully!")
         return model
     except ImportError:
-        st.error("âŒ TensorFlow not installed. Run: pip install tensorflow")
+        st.error("❌ TensorFlow not installed. Run: pip install tensorflow")
         return None
     except Exception as e:
-        st.error(f"âŒ Error loading model: {str(e)}")
+        st.error(f"❌ Error loading model: {str(e)}")
         print(f"[DEBUG] Model loading error: {e}")
         return None
 
@@ -300,12 +300,12 @@ def load_face_cascade():
         cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
         cascade = cv2.CascadeClassifier(cascade_path)
         if cascade.empty():
-            st.error("âŒ Failed to load Haar Cascade classifier")
+            st.error("❌ Failed to load Haar Cascade classifier")
             return None
-        print("[DEBUG] âœ… Haar Cascade loaded successfully!")
+        print("[DEBUG] ✅ Haar Cascade loaded successfully!")
         return cascade
     except Exception as e:
-        st.error(f"âŒ Error loading Haar Cascade: {str(e)}")
+        st.error(f"❌ Error loading Haar Cascade: {str(e)}")
         return None
 
 def detect_faces(frame, cascade):
@@ -353,22 +353,22 @@ def predict_emotion(model, face_img):
 def get_emotion_data(emotion_idx):
     """Get emotion label, emoji, and AI response"""
     emotions = {
-        0: {"label": "Angry", "emoji": "ðŸ˜ ", "color": "#ff4444"},
-        1: {"label": "Disgust", "emoji": "ðŸ¤¢", "color": "#ff8844"},
-        2: {"label": "Fear", "emoji": "ðŸ˜¨", "color": "#9944ff"},
-        3: {"label": "Happy", "emoji": "ðŸ˜„", "color": "#44ff44"},
-        4: {"label": "Neutral", "emoji": "ðŸ˜", "color": "#88ccff"},
-        5: {"label": "Sad", "emoji": "ðŸ˜¢", "color": "#4488ff"},
-        6: {"label": "Surprise", "emoji": "ðŸ˜®", "color": "#ffcc44"}
+        0: {"label": "Angry", "emoji": "😠", "color": "#ff4444"},
+        1: {"label": "Disgust", "emoji": "🤢", "color": "#ff8844"},
+        2: {"label": "Fear", "emoji": "😨", "color": "#9944ff"},
+        3: {"label": "Happy", "emoji": "😄", "color": "#44ff44"},
+        4: {"label": "Neutral", "emoji": "😐", "color": "#88ccff"},
+        5: {"label": "Sad", "emoji": "😢", "color": "#4488ff"},
+        6: {"label": "Surprise", "emoji": "😮", "color": "#ffcc44"}
     }
     ai_responses = {
         0: "I sense some frustration or anger. Take a deep breath. What's bothering you? I'm here to listen.",
         1: "It looks like something's turned you off. That's okay-we all have moments like these.",
         2: "I notice fear or anxiety. Remember, you're stronger than you think. What can I help with?",
-        3: "Beautiful! Your happiness is contagious. Keep shining! ðŸŒŸ",
+        3: "Beautiful! Your happiness is contagious. Keep shining! 🌟",
         4: "You seem calm and collected. A peaceful mind is a powerful mind.",
         5: "I sense sadness. It's okay to feel down sometimes. Would you like to talk about it?",
-        6: "Wow! You look pleasantly surprised! What's the good news? ðŸŽ‰"
+        6: "Wow! You look pleasantly surprised! What's the good news? 🎉"
     }
     return emotions.get(emotion_idx, emotions[4]), ai_responses.get(emotion_idx, "")
 
@@ -389,7 +389,7 @@ def capture_webcam_frame():
         ret, frame = cap.read()
         cap.release()
         if ret and frame is not None:
-            print("[DEBUG] âœ… Webcam frame captured successfully!")
+            print("[DEBUG] ✅ Webcam frame captured successfully!")
             return frame
     print("[DEBUG] Webcam failed to initialize")
     return None
@@ -444,11 +444,11 @@ if "last_frame_rgb" not in st.session_state:
 if "webcam_error" not in st.session_state:
     st.session_state.webcam_error = None
 # ==================== MAIN UI ====================
-st.markdown('<h1 class="main-title">ðŸŽ­ FACE MOOD DETECTION</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">🎭 FACE MOOD DETECTION</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Real-time Emotion Recognition with AI</p>', unsafe_allow_html=True)
 # Check if model loaded successfully
-model_status = "ðŸŸ¢ Online" if st.session_state.model else "ðŸ”´ Offline"
-cascade_status = "ðŸŸ¢ Online" if st.session_state.cascade else "ðŸ”´ Offline"
+model_status = "✅ Online" if st.session_state.model else "❌ Offline"
+cascade_status = "✅ Online" if st.session_state.cascade else "❌ Offline"
 col1, col2 = st.columns(2)
 with col1:
     st.info(f"**Model Status:** {model_status}")
@@ -459,7 +459,7 @@ col_left, col_middle, col_right = st.columns([1, 1, 1], gap="large")
 # ==================== LEFT COLUMN: INPUT SOURCE ====================
 with col_left:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.subheader("ðŸ“· Input Source")
+    st.subheader("📷 Input Source")
 
     source = st.radio(
         "Choose how to provide a face image:",
@@ -476,7 +476,7 @@ with col_left:
         if camera_image is not None:
             frame = load_image_from_bytes(camera_image)
             if frame is None:
-                st.session_state.webcam_error = "âŒ Unable to decode camera image."
+                st.session_state.webcam_error = "❌ Unable to decode camera image."
             else:
                 frame = cv2.flip(frame, 1)
     elif source == "Upload Image":
@@ -488,13 +488,13 @@ with col_left:
         if uploaded_file is not None:
             frame = load_image_from_bytes(uploaded_file)
             if frame is None:
-                st.session_state.webcam_error = "âŒ Unable to decode uploaded image."
+                st.session_state.webcam_error = "❌ Unable to decode uploaded image."
     else:
-        capture_btn = st.button("ðŸ“¸ Capture Frame", key="capture", use_container_width=True)
+        capture_btn = st.button("📸 Capture Frame", key="capture", use_container_width=True)
         if capture_btn:
             frame = capture_webcam_frame()
             if frame is None:
-                st.session_state.webcam_error = "âŒ Local webcam not available."
+                st.session_state.webcam_error = "❌ Local webcam not available."
             else:
                 frame = cv2.flip(frame, 1)
 
@@ -506,7 +506,7 @@ with col_left:
     elif st.session_state.webcam_error:
         st.error(st.session_state.webcam_error)
     else:
-        st.warning("ðŸ‘ï¸ Provide an image from the browser camera or upload a file to detect emotion.")
+        st.warning("👆 Provide an image from the browser camera or upload a file to detect emotion.")
 
     if source == "Local Webcam (local only)":
         st.info("Local webcam capture only works when you run this app on your machine.")
@@ -514,7 +514,7 @@ with col_left:
 # ==================== MIDDLE COLUMN: EMOTION PREDICTION ====================
 with col_middle:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.subheader("ðŸŽ¯ Emotion Analysis")
+    st.subheader("🧠 Emotion Analysis")
     if st.session_state.last_emotion is not None and st.session_state.last_confidence is not None:
         emotion_data, ai_response = get_emotion_data(st.session_state.last_emotion)
         confidence_scores = st.session_state.last_confidence
@@ -546,12 +546,12 @@ with col_middle:
             )
         st.markdown('</div>', unsafe_allow_html=True)
     else:
-        st.warning("ðŸ‘ï¸ No face detected yet. Enable live stream to start detection.")
+        st.warning("👆 No face detected yet. Enable live stream to start detection.")
     st.markdown('</div>', unsafe_allow_html=True)
 # ==================== RIGHT COLUMN: AI INTERPRETATION ====================
 with col_right:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.subheader("ðŸ’­ AI Insight")
+    st.subheader("💭 AI Insight")
     if st.session_state.last_emotion is not None:
         emotion_data, ai_response = get_emotion_data(st.session_state.last_emotion)
         st.markdown(
@@ -572,7 +572,7 @@ with col_right:
         )
         st.markdown('</div>', unsafe_allow_html=True)
     else:
-        st.info("ðŸ‘‹ Detected emotions will appear here with personalized AI insights!")
+        st.info("👌 Detected emotions will appear here with personalized AI insights!")
     st.markdown('</div>', unsafe_allow_html=True)
 # ==================== FOOTER ====================
 st.markdown("---")
